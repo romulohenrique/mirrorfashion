@@ -15,7 +15,7 @@ import br.com.caelum.vraptor.serialization.JSONPSerialization;
 @Resource
 @RequestScoped
 public class ProdutoController {
-
+	
 	@Get("/produtos")
 	public void produtos(Result result, String callback) {
 
@@ -25,6 +25,10 @@ public class ProdutoController {
 
 		JSONPSerialization serialization = result.use(jsonp());
 
+		if (callback == null) {
+			result.forwardTo("/WEB-INF/jsp/erro.jsp");
+		}
+		
 		if (!callback.matches("[a-z A-Z_0-9 ._]*")) {
 			callback = "";
 		}
