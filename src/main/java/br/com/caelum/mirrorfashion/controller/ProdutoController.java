@@ -1,5 +1,6 @@
 package br.com.caelum.mirrorfashion.controller;
 
+import static br.com.caelum.vraptor.view.Results.json;
 import static br.com.caelum.vraptor.view.Results.jsonp;
 
 import java.util.List;
@@ -11,11 +12,12 @@ import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.ioc.RequestScoped;
 import br.com.caelum.vraptor.serialization.JSONPSerialization;
+import br.com.caelum.vraptor.serialization.JSONSerialization;
 
 @Resource
 @RequestScoped
 public class ProdutoController {
-	
+
 	@Get("/produtos")
 	public void produtos(Result result, String callback) {
 
@@ -25,10 +27,12 @@ public class ProdutoController {
 
 		JSONPSerialization serialization = result.use(jsonp());
 
+		JSONSerialization jsonSerialization = result.use(json());
+
 		if (callback == null) {
-			result.forwardTo("/WEB-INF/jsp/erro.jsp");
+			jsonSerialization.from("Callback inválido", "erro").serialize();
 		}
-		
+
 		if (!callback.matches("[a-z A-Z_0-9 ._]*")) {
 			callback = "";
 		}
