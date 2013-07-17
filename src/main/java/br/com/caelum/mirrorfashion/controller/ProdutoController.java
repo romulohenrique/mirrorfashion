@@ -30,7 +30,9 @@ public class ProdutoController {
 		JSONSerialization jsonSerialization = result.use(json());
 
 		if (callback == null) {
-			jsonSerialization.from("Callback inválido", "erro").serialize();
+			jsonSerialization.from(
+					"Você precisa passar o parâmetro ?callback=nomeDaSuaFuncao",
+					"erro").serialize();
 		}
 
 		if (!callback.matches("[a-z A-Z_0-9 ._]*")) {
