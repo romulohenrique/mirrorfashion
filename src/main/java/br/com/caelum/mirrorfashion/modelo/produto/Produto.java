@@ -1,4 +1,4 @@
-package br.com.caelum.mirrorfashion.modelo;
+package br.com.caelum.mirrorfashion.modelo.produto;
 
 public class Produto {
 

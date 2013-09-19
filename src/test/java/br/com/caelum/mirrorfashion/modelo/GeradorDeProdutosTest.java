@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.junit.Test;
 
+import br.com.caelum.mirrorfashion.modelo.produto.GeradorDeProdutos;
+import br.com.caelum.mirrorfashion.modelo.produto.Produto;
+
 public class GeradorDeProdutosTest {
 
 	@Test

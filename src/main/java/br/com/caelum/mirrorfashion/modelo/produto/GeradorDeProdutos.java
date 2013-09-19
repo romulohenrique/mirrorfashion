@@ -1,4 +1,4 @@
-package br.com.caelum.mirrorfashion.modelo;
+package br.com.caelum.mirrorfashion.modelo.produto;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -5,8 +5,8 @@ import static br.com.caelum.vraptor.view.Results.jsonp;
 
 import java.util.List;
 
-import br.com.caelum.mirrorfashion.modelo.produto.GeradorDeProdutos;
-import br.com.caelum.mirrorfashion.modelo.produto.Produto;
+import br.com.caelum.mirrorfashion.modelo.treinamento.GeradorDeTreinamentos;
+import br.com.caelum.mirrorfashion.modelo.treinamento.Treinamento;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
@@ -14,16 +14,17 @@ import br.com.caelum.vraptor.ioc.RequestScoped;
 import br.com.caelum.vraptor.serialization.JSONPSerialization;
 import br.com.caelum.vraptor.serialization.JSONSerialization;
 
+
 @Resource
 @RequestScoped
-public class ProdutoController {
-
-	@Get("/produtos")
+public class TreinamentoController {
+	
+	@Get("/treinamentos")
 	public void produtos(Result result, String callback) {
 
-		GeradorDeProdutos geradorProdutos = new GeradorDeProdutos();
+		GeradorDeTreinamentos geradorTreinamentos = new GeradorDeTreinamentos();
 
-		List<Produto> produtos = geradorProdutos.geraProdutos();
+		List<Treinamento> treinamentos = geradorTreinamentos.geraTreinamentos();
 
 		JSONPSerialization serialization = result.use(jsonp());
 
@@ -39,7 +40,7 @@ public class ProdutoController {
 			callback = "";
 		}
 
-		serialization.withCallback(callback).from(produtos, "produtos")
+		serialization.withCallback(callback).from(treinamentos, "treinamentos")
 				.serialize();
 
 	}
