@@ -5,6 +5,8 @@ import static br.com.caelum.vraptor.view.Results.jsonp;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import br.com.caelum.mirrorfashion.modelo.produto.GeradorDeProdutos;
 import br.com.caelum.mirrorfashion.modelo.produto.Produto;
 import br.com.caelum.vraptor.Get;
@@ -18,29 +20,42 @@ import br.com.caelum.vraptor.serialization.JSONSerialization;
 @RequestScoped
 public class ProdutoController {
 
+	private Result result;
+	private List<Produto> produtos;
+	private JSONSerialization jsonSerialization;
+
+	public ProdutoController(Result result) {
+		this.result = result;
+		this.produtos = new GeradorDeProdutos().geraProdutos();
+		this.jsonSerialization = result.use(json());
+	}
+
 	@Get("/produtos")
-	public void produtos(Result result, String callback) {
+	public void produtos(String callback) {
 
-		GeradorDeProdutos geradorProdutos = new GeradorDeProdutos();
-
-		List<Produto> produtos = geradorProdutos.geraProdutos();
-
-		JSONPSerialization serialization = result.use(jsonp());
-
-		JSONSerialization jsonSerialization = result.use(json());
+		JSONPSerialization jsonpSerialization = this.result.use(jsonp());
 
 		if (callback == null) {
-			jsonSerialization.from(
-					"Você precisa passar o parâmetro ?callback=nomeDaSuaFuncao",
-					"erro").serialize();
+			this.jsonSerialization
+					.from("Você precisa passar o parâmetro ?callback=nomeDaSuaFuncao",
+							"erro").serialize();
 		}
 
 		if (!callback.matches("[a-z A-Z_0-9 ._]*")) {
 			callback = "";
 		}
 
-		serialization.withCallback(callback).from(produtos, "produtos")
-				.serialize();
+		jsonpSerialization.withCallback(callback)
+				.from(this.produtos, "produtos").serialize();
+
+	}
+
+	@Get("/public/produtos")
+	public void produtosHeader(HttpServletResponse response) {
+
+		response.addHeader("Access-Control-Allow-Origin", "*");
+
+		this.jsonSerialization.from(this.produtos, "produtos").serialize();
 
 	}
 
