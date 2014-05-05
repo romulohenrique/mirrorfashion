@@ -36,9 +36,7 @@ public class ProdutoController {
 		JSONPSerialization jsonpSerialization = this.result.use(jsonp());
 
 		if (callback == null) {
-			this.jsonSerialization
-					.from("Você precisa passar o parâmetro ?callback=nomeDaSuaFuncao",
-							"erro").serialize();
+			this.jsonSerialization.from(this.produtos, "produtos").serialize();
 		}
 
 		if (!callback.matches("[a-z A-Z_0-9 ._]*")) {
